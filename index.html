@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>noted.</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    />
+    <link rel="stylesheet" href="styles/main.css" />
+  </head>
+  <body class="light-theme">
+    <div class="app">
+      <header class="header">
+        <div class="header-left">
+          <h1>noted.</h1>
+          <div class="date-display" id="currentDate"></div>
+        </div>
+        <div class="header-right">
+          <button id="themeToggle" class="theme-toggle" title="Toggle theme">
+            <span class="moon">🌙</span>
+            <span class="sun">☀️</span>
+          </button>
+        </div>
+      </header>
+
+      <aside class="sidebar">
+        <nav>
+          <ul>
+            <li class="active">
+              <a href="#calendar" class="nav-link">
+                <span class="icon">📆</span>
+                <span class="text">Calendar</span>
+              </a>
+            </li>
+            <li class="inactive">
+              <a href="#goal" class="nav-link">
+                <span class="icon">🎯</span>
+                <span class="text">Goal Dashboard</span>
+              </a>
+            </li>
+            <!-- Other nav items remain the same -->
+          </ul>
+        </nav>
+
+        <div class="quick-notes">
+          <h3>Quick Notes</h3>
+          <textarea placeholder="Jot down quick thoughts..."></textarea>
+        </div>
+      </aside>
+
+      <main class="main-content" id="mainContent">
+        <div class="content-header">
+          <h2 id="viewTitle">Calendar View</h2>
+          <div class="view-controls">
+            <div class="view-options">
+              <button class="view-btn active" data-view="day">Day</button>
+              <button class="view-btn" data-view="week">Week</button>
+              <button class="view-btn" data-view="month">Month</button>
+            </div>
+            <button id="addEventBtn" class="add-event-btn">+ Add Event</button>
+          </div>
+        </div>
+
+        <!-- Event creation modal (hidden by default) -->
+        <div id="eventModal" class="modal">
+          <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h3>Add New Event</h3>
+            <form id="eventForm">
+              <div class="form-group">
+                <label for="eventTitle">Event Title</label>
+                <input type="text" id="eventTitle" required />
+              </div>
+              <div class="form-group">
+                <label for="eventDate">Date</label>
+                <input type="date" id="eventDate" required />
+              </div>
+              <div class="form-group">
+                <label for="eventTime">Time</label>
+                <input type="time" id="eventTime" required />
+              </div>
+              <div class="form-group">
+                <label for="eventDescription">Description</label>
+                <textarea id="eventDescription" rows="3"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="eventColor">Color</label>
+                <select id="eventColor">
+                  <option value="#4361ee">Blue</option>
+                  <option value="#4cc9f0">Teal</option>
+                  <option value="#f72585">Pink</option>
+                  <option value="#7209b7">Purple</option>
+                  <option value="#f8961e">Orange</option>
+                </select>
+              </div>
+              <button type="submit" class="submit-btn">Save Event</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Calendar display area -->
+        <div class="calendar-container" id="calendarDisplay">
+          <!-- Month view header -->
+          <div class="calendar-header" id="calendarHeader">
+            <button id="prevBtn">&lt;</button>
+            <h3 id="currentPeriod">May 2023</h3>
+            <button id="nextBtn">&gt;</button>
+          </div>
+
+          <!-- Day view -->
+          <div class="day-view" id="dayView">
+            <div class="day-header">
+              <h3 id="dayDate">Monday, May 15</h3>
+            </div>
+            <div class="day-timeline" id="dayTimeline">
+              <!-- Time slots will be generated here -->
+            </div>
+          </div>
+
+          <!-- Week view -->
+          <div class="week-view" id="weekView">
+            <div class="week-days-header" id="weekDaysHeader">
+              <!-- Day headers will be generated here -->
+            </div>
+            <div class="week-grid" id="weekGrid">
+              <!-- Week grid will be generated here -->
+            </div>
+          </div>
+
+          <!-- Month view -->
+          <div class="month-view" id="monthView">
+            <div class="calendar-weekdays">
+              <div>Sun</div>
+              <div>Mon</div>
+              <div>Tue</div>
+              <div>Wed</div>
+              <div>Thu</div>
+              <div>Fri</div>
+              <div>Sat</div>
+            </div>
+            <div class="calendar-days" id="monthDays">
+              <!-- Month days will be generated here -->
+            </div>
+          </div>
+        </div>
+
+        <div class="upcoming-events">
+          <h3>Upcoming Events</h3>
+          <div class="events-list" id="eventsList">
+            <!-- Events will be inserted here by JavaScript -->
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="scripts/app.js"></script>
+  </body>
+</html>
