@@ -1,3 +1,8 @@
+// Initialize Firebase
+auth = firebase.auth();
+db = firebase.firestore();
+// const { Timestamp } = firebase.firestore;
+
 // DOM Elements
 const addEventBtn = document.getElementById("addEventBtn");
 const eventModal = document.getElementById("eventModal");
@@ -32,12 +37,16 @@ const monthDays = document.getElementById("monthDays");
 // Calendar state
 let currentDate = new Date();
 let currentView = "month";
-let events = JSON.parse(localStorage.getItem("calendarEvents")) || [];
-let currentEventId = null; // For edit mode
+let events = [];
+let currentEventId = null;
 let draggedEvent = null;
+let unsubscribeFromEvents = null;
 
 // Initialize the app
 function init() {
+  setupAuth();
+  addLogoutButton();
+
   // Set initial view
   switchView(currentView);
 
@@ -45,14 +54,145 @@ function init() {
   setupEventListeners();
 
   // Render initial data
-  renderUpcomingEvents();
   updateCurrentDate();
-
-  // Load theme preference
   loadThemePreference();
 }
 
-// Set up event listeners
+// ======================
+// AUTHENTICATION FUNCTIONS
+// ======================
+
+function setupAuth() {
+  const loginForm = document.getElementById("login-form");
+  const signupForm = document.getElementById("signup-form");
+  const toggleSignup = document.getElementById("toggle-signup");
+  const authError = document.getElementById("auth-error");
+
+  // Toggle between login and signup forms
+  toggleSignup.addEventListener("click", (e) => {
+    e.preventDefault();
+    loginForm.style.display =
+      loginForm.style.display === "none" ? "block" : "none";
+    signupForm.style.display =
+      signupForm.style.display === "none" ? "block" : "none";
+    toggleSignup.textContent =
+      loginForm.style.display === "none"
+        ? "Already have an account? Login"
+        : "Don't have an account? Sign up";
+    authError.textContent = "";
+  });
+
+  // Login handler
+  loginForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("login-email").value;
+    const password = document.getElementById("login-password").value;
+
+    try {
+      await firebase.auth().signInWithEmailAndPassword(email, password);
+    } catch (error) {
+      authError.textContent = error.message;
+      console.error("Login error:", error);
+    }
+  });
+
+  // Signup handler
+  signupForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("signup-email").value;
+    const password = document.getElementById("signup-password").value;
+
+    try {
+      await firebase.auth().createUserWithEmailAndPassword(email, password);
+    } catch (error) {
+      authError.textContent = error.message;
+      console.error("Signup error:", error);
+    }
+  });
+
+  // Auth state observer
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      console.log("User signed in:", user.email);
+      document.getElementById("auth-container").style.display = "none";
+      document.querySelector(".app").style.display = "grid";
+      setupRealtimeUpdates();
+    } else {
+      console.log("User signed out");
+      document.getElementById("auth-container").style.display = "flex";
+      document.querySelector(".app").style.display = "none";
+    }
+  });
+}
+
+function addLogoutButton() {
+  const logoutBtn = document.querySelector(".logout-btn");
+  logoutBtn.addEventListener("click", () => firebase.auth().signOut());
+}
+
+// ======================
+// FIRESTORE FUNCTIONS
+// ======================
+
+async function saveEvents() {
+  try {
+    const user = auth.currentUser;
+    if (!user) throw new Error("User not authenticated");
+
+    // First delete all existing events
+    const snapshot = await db.collection(`users/${user.uid}/events`).get();
+    const batch = db.batch();
+    snapshot.docs.forEach((doc) => {
+      batch.delete(doc.ref);
+    });
+    await batch.commit();
+
+    // Then add all current events
+    const eventsRef = db.collection(`users/${user.uid}/events`);
+    const batch2 = db.batch();
+    events.forEach((event) => {
+      const docRef = eventsRef.doc(event.id);
+      batch2.set(docRef, event);
+    });
+    await batch2.commit();
+  } catch (error) {
+    console.error("Error saving events:", error);
+    throw error;
+  }
+}
+
+async function deleteEventFromFirestore(id) {
+  try {
+    const user = firebase.auth().currentUser;
+    if (!user) throw new Error("User not authenticated");
+
+    await db.collection(`users/${user.uid}/events`).doc(id).delete();
+  } catch (error) {
+    console.error("Error deleting event:", error);
+    throw error;
+  }
+}
+
+function setupRealtimeUpdates() {
+  const user = auth.currentUser;
+  if (!user) return;
+
+  unsubscribeFromEvents = db.collection(`users/${user.uid}/events`).onSnapshot(
+    (snapshot) => {
+      events = snapshot.docs.map((doc) => doc.data());
+      renderCurrentView();
+      renderUpcomingEvents();
+    },
+    (error) => {
+      console.error("Error listening to events:", error);
+    }
+  );
+}
+
+// ======================
+// EVENT HANDLING FUNCTIONS
+// ======================
+
 function setupEventListeners() {
   // Modal controls
   addEventBtn.addEventListener("click", () => openEventModal());
@@ -80,7 +220,6 @@ function setupEventListeners() {
   themeToggle.addEventListener("click", toggleTheme);
 }
 
-// Open event modal (for add or edit)
 function openEventModal(event = null) {
   if (event) {
     // Edit mode
@@ -101,17 +240,15 @@ function openEventModal(event = null) {
   eventModal.style.display = "block";
 }
 
-// Close event modal
 function closeEventModal() {
   eventModal.style.display = "none";
 }
 
-// Handle event form submission
-function handleEventSubmit(e) {
+async function handleEventSubmit(e) {
   e.preventDefault();
 
   const event = {
-    id: currentEventId || Date.now().toString(),
+    id: currentEventId || Date.now().toString(), // Keep same ID generation
     title: eventTitle.value,
     date: eventDate.value,
     time: eventTime.value,
@@ -119,24 +256,47 @@ function handleEventSubmit(e) {
     color: eventColor.value,
   };
 
-  if (currentEventId) {
-    // Update existing event
-    const index = events.findIndex((e) => e.id === currentEventId);
-    if (index !== -1) {
-      events[index] = event;
-    }
-  } else {
-    // Add new event
-    events.push(event);
-  }
+  try {
+    const user = auth.currentUser;
+    if (!user) throw new Error("User not authenticated");
 
-  saveEvents();
-  renderCurrentView();
-  renderUpcomingEvents();
-  closeEventModal();
+    if (currentEventId) {
+      // Update existing event
+      await db
+        .collection(`users/${user.uid}/events`)
+        .doc(event.id)
+        .update(event);
+    } else {
+      // Add new event
+      await db.collection(`users/${user.uid}/events`).doc(event.id).set(event);
+    }
+
+    // No need to manually update events array - realtime listener will handle it
+    closeEventModal();
+  } catch (error) {
+    console.error("Error saving event:", error);
+    alert("Failed to save event. Please try again.");
+  }
+}
+async function deleteEvent(id) {
+  if (confirm("Are you sure you want to delete this event?")) {
+    try {
+      const user = auth.currentUser;
+      if (!user) throw new Error("User not authenticated");
+
+      await db.collection(`users/${user.uid}/events`).doc(id).delete();
+      // No need to manually update events array - realtime listener will handle it
+    } catch (error) {
+      console.error("Error deleting event:", error);
+      alert("Failed to delete event. Please try again.");
+    }
+  }
 }
 
-// Switch between calendar views
+// ======================
+// CALENDAR VIEW FUNCTIONS
+// ======================
+
 function switchView(view) {
   viewButtons.forEach((button) => {
     button.classList.toggle("active", button.dataset.view === view);
@@ -165,7 +325,6 @@ function switchView(view) {
   renderCurrentView();
 }
 
-// Render the current active view
 function renderCurrentView() {
   switch (currentView) {
     case "day":
@@ -180,7 +339,6 @@ function renderCurrentView() {
   }
 }
 
-// Render day view with drag-and-drop
 function renderDayView() {
   dayDate.textContent = currentDate.toLocaleDateString("en-US", {
     weekday: "long",
@@ -234,7 +392,6 @@ function renderDayView() {
   }
 }
 
-// Render week view with drag-and-drop
 function renderWeekView() {
   const startOfWeek = new Date(currentDate);
   startOfWeek.setDate(currentDate.getDate() - currentDate.getDay());
@@ -317,7 +474,6 @@ function renderWeekView() {
   }
 }
 
-// Render month view with drag-and-drop
 function renderMonthView() {
   currentPeriod.textContent = currentDate.toLocaleDateString("en-US", {
     month: "long",
@@ -339,7 +495,7 @@ function renderMonthView() {
 
   monthDays.innerHTML = "";
 
-  // Add empty cells
+  // Add empty cells for days before the 1st
   for (let i = 0; i < startingDay; i++) {
     const emptyDay = document.createElement("div");
     emptyDay.className = "calendar-day empty";
@@ -388,7 +544,10 @@ function renderMonthView() {
   }
 }
 
-// Create event element with drag-and-drop and edit/delete actions
+// ======================
+// EVENT ELEMENT FUNCTIONS
+// ======================
+
 function createEventElement(event, viewType) {
   const eventElement = document.createElement("div");
   eventElement.className = `${viewType}-event`;
@@ -430,14 +589,13 @@ function createEventElement(event, viewType) {
   return eventElement;
 }
 
-// Drag and drop handlers
 function handleDragOver(e) {
   e.preventDefault();
   e.dataTransfer.dropEffect = "move";
   this.classList.add("drop-target");
 }
 
-function handleDrop(e) {
+async function handleDrop(e) {
   e.preventDefault();
   this.classList.remove("drop-target");
 
@@ -452,21 +610,24 @@ function handleDrop(e) {
     newTime = `${this.dataset.hour}:${minutes}`;
   }
 
-  // Update event
-  const index = events.findIndex((e) => e.id === draggedEvent.id);
-  if (index !== -1) {
-    events[index] = {
-      ...events[index],
-      date: newDate,
-      time: newTime,
-    };
-    saveEvents();
-    renderCurrentView();
-    renderUpcomingEvents();
+  try {
+    const user = auth.currentUser;
+    if (!user) throw new Error("User not authenticated");
+
+    await db
+      .collection(`users/${user.uid}/events`)
+      .doc(draggedEvent.id)
+      .update({
+        date: newDate,
+        time: newTime,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+  } catch (error) {
+    console.error("Error moving event:", error);
+    alert("Error moving event: " + error.message);
   }
 }
 
-// Show context menu for event actions
 function showEventContextMenu(e, event) {
   // Remove any existing context menu
   const existingMenu = document.querySelector(".context-menu");
@@ -509,7 +670,10 @@ function showEventContextMenu(e, event) {
   }, 100);
 }
 
-// Navigation functions
+// ======================
+// NAVIGATION FUNCTIONS
+// ======================
+
 function navigatePrevious() {
   switch (currentView) {
     case "day":
@@ -540,57 +704,9 @@ function navigateNext() {
   renderCurrentView();
 }
 
-// Theme functions
-function toggleTheme() {
-  document.body.classList.toggle("dark-theme");
-  document.body.classList.toggle("light-theme");
-  localStorage.setItem(
-    "themePreference",
-    document.body.classList.contains("dark-theme") ? "dark" : "light"
-  );
-}
-
-function loadThemePreference() {
-  const savedTheme = localStorage.getItem("themePreference") || "light";
-  document.body.classList.add(
-    savedTheme === "dark" ? "dark-theme" : "light-theme"
-  );
-}
-
-// Helper functions
-function formatDateForStorage(date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
-
-function formatTime(timeStr) {
-  const [hours, minutes] = timeStr.split(":");
-  const hour = parseInt(hours);
-  const ampm = hour >= 12 ? "PM" : "AM";
-  const displayHour = hour % 12 || 12;
-  return `${displayHour}:${minutes} ${ampm}`;
-}
-
-function isSameDay(date1, date2) {
-  return (
-    date1.getFullYear() === date2.getFullYear() &&
-    date1.getMonth() === date2.getMonth() &&
-    date1.getDate() === date2.getDate()
-  );
-}
-
-function updateCurrentDate() {
-  const options = {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  };
-  document.getElementById("currentDate").textContent =
-    new Date().toLocaleDateString("en-US", options);
-}
+// ======================
+// UPCOMING EVENTS
+// ======================
 
 function renderUpcomingEvents() {
   eventsList.innerHTML = "";
@@ -612,21 +728,21 @@ function renderUpcomingEvents() {
     const eventElement = document.createElement("div");
     eventElement.className = "event-card";
     eventElement.innerHTML = `
-        <div class="event-time">${formatTime(event.time)}</div>
-        <div class="event-details">
-          <h4>${event.title}</h4>
-          <p>${formatDate(event.date)}</p>
-          ${
-            event.description
-              ? `<p class="event-description">${event.description}</p>`
-              : ""
-          }
-        </div>
-        <div class="event-actions">
-          <button class="edit-btn">Edit</button>
-          <button class="delete-btn">Delete</button>
-        </div>
-      `;
+      <div class="event-time">${formatTime(event.time)}</div>
+      <div class="event-details">
+        <h4>${event.title}</h4>
+        <p>${formatDate(event.date)}</p>
+        ${
+          event.description
+            ? `<p class="event-description">${event.description}</p>`
+            : ""
+        }
+      </div>
+      <div class="event-actions">
+        <button class="edit-btn">Edit</button>
+        <button class="delete-btn">Delete</button>
+      </div>
+    `;
 
     eventElement.querySelector(".edit-btn").addEventListener("click", (e) => {
       e.stopPropagation();
@@ -643,9 +759,36 @@ function renderUpcomingEvents() {
   });
 }
 
+// ======================
+// HELPER FUNCTIONS
+// ======================
+
+function formatDateForStorage(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function formatTime(timeStr) {
+  const [hours, minutes] = timeStr.split(":");
+  const hour = parseInt(hours);
+  const ampm = hour >= 12 ? "PM" : "AM";
+  const displayHour = hour % 12 || 12;
+  return `${displayHour}:${minutes} ${ampm}`;
+}
+
 function formatDate(dateStr) {
   const options = { weekday: "short", month: "short", day: "numeric" };
   return new Date(dateStr).toLocaleDateString("en-US", options);
+}
+
+function isSameDay(date1, date2) {
+  return (
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate()
+  );
 }
 
 function showEventDetails(event) {
@@ -656,18 +799,36 @@ function showEventDetails(event) {
   );
 }
 
-function deleteEvent(id) {
-  if (confirm("Are you sure you want to delete this event?")) {
-    events = events.filter((event) => event.id !== id);
-    saveEvents();
-    renderCurrentView();
-    renderUpcomingEvents();
-  }
+function updateCurrentDate() {
+  const options = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  document.getElementById("currentDate").textContent =
+    new Date().toLocaleDateString("en-US", options);
 }
 
-function saveEvents() {
-  localStorage.setItem("calendarEvents", JSON.stringify(events));
+// ======================
+// THEME FUNCTIONS
+// ======================
+
+function toggleTheme() {
+  document.body.classList.toggle("dark-theme");
+  document.body.classList.toggle("light-theme");
+  localStorage.setItem(
+    "themePreference",
+    document.body.classList.contains("dark-theme") ? "dark" : "light"
+  );
 }
 
-// Initialize the app
+function loadThemePreference() {
+  const savedTheme = localStorage.getItem("themePreference") || "light";
+  document.body.classList.add(
+    savedTheme === "dark" ? "dark-theme" : "light-theme"
+  );
+}
+
+// Initialize the app when DOM is loaded
 document.addEventListener("DOMContentLoaded", init);
