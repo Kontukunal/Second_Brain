@@ -8,9 +8,56 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
     />
     <link rel="stylesheet" href="styles/main.css" />
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyDVoMf2JuGYaA0Y9Uu30g5doEjxj0SrYkY",
+        authDomain: "noted-abfa8.firebaseapp.com",
+        projectId: "noted-abfa8",
+        storageBucket: "noted-abfa8.appspot.com",
+        messagingSenderId: "871510309596",
+        appId: "1:871510309596:web:2c03c5ed9413fd5c085219",
+        measurementId: "G-W8X756LP8N",
+      };
+      firebase.initializeApp(firebaseConfig);
+    </script>
   </head>
   <body class="light-theme">
-    <div class="app">
+    <!-- Authentication Container -->
+    <div id="auth-container" class="auth-container">
+      <div class="auth-form">
+        <h2>Welcome to Noted</h2>
+        <div id="auth-error" class="auth-error"></div>
+        <form id="login-form">
+          <input type="email" id="login-email" placeholder="Email" required />
+          <input
+            type="password"
+            id="login-password"
+            placeholder="Password"
+            required
+          />
+          <button type="submit">Login</button>
+        </form>
+        <form id="signup-form">
+          <input type="email" id="signup-email" placeholder="Email" required />
+          <input
+            type="password"
+            id="signup-password"
+            placeholder="Password"
+            required
+          />
+          <button type="submit">Sign Up</button>
+        </form>
+        <p class="auth-toggle">
+          Don't have an account? <a href="#" id="toggle-signup">Sign up</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div class="app" style="display: none">
       <header class="header">
         <div class="header-left">
           <h1>noted.</h1>
@@ -21,6 +68,7 @@
             <span class="moon">🌙</span>
             <span class="sun">☀️</span>
           </button>
+          <button class="logout-btn">Logout</button>
         </div>
       </header>
 
@@ -39,13 +87,12 @@
                 <span class="text">Goal Dashboard</span>
               </a>
             </li>
-            <!-- Other nav items remain the same -->
           </ul>
         </nav>
 
         <div class="quick-notes">
           <h3>Quick Notes</h3>
-          <textarea placeholder="Jot down quick thoughts..."></textarea>
+          <textarea placeholder="Write down quick thoughts..."></textarea>
         </div>
       </aside>
 

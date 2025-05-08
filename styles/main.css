@@ -76,7 +76,7 @@ html {
 }
 
 .header h1 {
-  font-size:40px;
+  font-size: 40px;
   font-weight: 600;
 }
 
@@ -334,8 +334,6 @@ html {
   }
 }
 
-/* Add these styles to your existing CSS */
-
 /* Modal styles */
 .modal {
   display: none;
@@ -511,8 +509,6 @@ html {
   white-space: nowrap;
   cursor: pointer;
 }
-
-/* Add these new styles and update existing ones */
 
 /* View controls */
 .view-controls {
@@ -754,8 +750,6 @@ html {
   cursor: pointer;
 }
 
-/* Add these styles to your existing CSS */
-
 /* Context menu */
 .context-menu {
   position: fixed;
@@ -869,8 +863,6 @@ html {
   margin-top: 0.1rem;
 }
 
-/* Add these styles to your existing CSS */
-
 /* Upcoming Events Section */
 .event-card {
   display: flex;
@@ -945,7 +937,6 @@ html {
   color: white;
 }
 
-/* Drag and drop improvements */
 .day-event,
 .week-event,
 .month-event {
@@ -956,4 +947,95 @@ html {
 .week-event:hover,
 .month-event:hover {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Auth styles */
+.auth-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-primary);
+  z-index: 1000;
+}
+
+.auth-form {
+  background-color: var(--bg-secondary);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow-xl);
+  width: 100%;
+  max-width: 400px;
+}
+
+.auth-form h2 {
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: var(--text-primary);
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.auth-form button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.auth-form button:hover {
+  background-color: var(--secondary-color);
+}
+
+.auth-toggle {
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.auth-toggle a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.auth-error {
+  color: #dc2626;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+#signup-form {
+  display: none;
+}
+
+.logout-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: 1rem;
+  transition: var(--transition);
+}
+
+.logout-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
