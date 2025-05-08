@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Second Brain. | To-Do</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    />
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/todo.css" />
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyDVoMf2JuGYaA0Y9Uu30g5doEjxj0SrYkY",
+        authDomain: "noted-abfa8.firebaseapp.com",
+        projectId: "noted-abfa8",
+        storageBucket: "noted-abfa8.appspot.com",
+        messagingSenderId: "871510309596",
+        appId: "1:871510309596:web:2c03c5ed9413fd5c085219",
+        measurementId: "G-W8X756LP8N",
+      };
+      firebase.initializeApp(firebaseConfig);
+    </script>
+  </head>
+  <body class="light-theme">
+    <div class="app">
+      <header class="header">
+        <div class="header-left">
+          <h1>Second Brain.</h1>
+          <div class="date-display" id="currentDate"></div>
+        </div>
+        <div class="header-right">
+          <button id="themeToggle" class="theme-toggle">
+            <span class="moon">🌙</span>
+            <span class="sun">☀️</span>
+          </button>
+          <button class="logout-btn">Logout</button>
+        </div>
+      </header>
+
+      <aside class="sidebar">
+        <nav>
+          <ul>
+            <li>
+              <a href="index.html" class="nav-link">
+                <span class="icon">📆</span>
+                <span class="text">Calendar</span>
+              </a>
+            </li>
+            <li class="active">
+              <a href="todo.html" class="nav-link">
+                <span class="icon">✅</span>
+                <span class="text">To-Do</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <div class="quick-notes">
+          <h3>Quick Notes</h3>
+          <textarea placeholder="Write down quick thoughts..."></textarea>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <div class="content-header">
+          <h2>To-Do List</h2>
+          <button id="addTaskBtn" class="add-event-btn">+ Add Task</button>
+        </div>
+
+        <div class="task-container">
+          <div class="task-categories" id="taskCategories">
+            <!-- Categories will be populated by JS -->
+          </div>
+        </div>
+
+        <!-- Task Modal -->
+        <div id="taskModal" class="modal">
+          <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h3 class="modal-title">Add New Task</h3>
+            <form id="taskForm">
+              <input type="hidden" id="taskId" />
+              <div class="form-group">
+                <label for="taskTitle">Task Title</label>
+                <input type="text" id="taskTitle" required />
+              </div>
+              <div class="form-group">
+                <label for="taskCategory">Category</label>
+                <select id="taskCategory" required>
+                  <option value="work">Work</option>
+                  <option value="personal">Personal</option>
+                  <option value="hobbies">Hobbies</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="taskPriority">Priority</label>
+                <select id="taskPriority" required>
+                  <option value="high">High</option>
+                  <option value="medium">Medium</option>
+                  <option value="low">Low</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="taskDueDate">Due Date</label>
+                <input type="date" id="taskDueDate" />
+              </div>
+              <div class="form-group">
+                <label for="taskDescription">Description</label>
+                <textarea id="taskDescription" rows="3"></textarea>
+              </div>
+              <button type="submit" class="submit-btn">Save Task</button>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="scripts/todo.js"></script>
+  </body>
+</html>
