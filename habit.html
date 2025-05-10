@@ -2,13 +2,14 @@
 <html lang="en">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Second Brain. | To-Do</title>
+    <title>Second Brain. | Habits</title>
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
     />
     <link rel="stylesheet" href="styles/main.css" />
-    <link rel="stylesheet" href="styles/todo.css" />
+    <link rel="stylesheet" href="styles/habits.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
@@ -50,16 +51,10 @@
                 <span class="text">Calendar</span>
               </a>
             </li>
-            <li class="active">
+            <li>
               <a href="todo.html" class="nav-link">
                 <span class="icon">✅</span>
                 <span class="text">To-Do</span>
-              </a>
-            </li>
-            <li>
-              <a href="journal.html" class="nav-link">
-                <span class="icon">📔</span>
-                <span class="text">Journal</span>
               </a>
             </li>
             <li>
@@ -69,6 +64,12 @@
               </a>
             </li>
             <li>
+              <a href="journal.html" class="nav-link">
+                <span class="icon">📔</span>
+                <span class="text">Journal</span>
+              </a>
+            </li>
+            <li class="active">
               <a href="habit.html" class="nav-link">
                 <span class="icon">🔄</span>
                 <span class="text">Habits</span>
@@ -84,56 +85,72 @@
 
       <main class="main-content">
         <div class="content-header">
-          <h2>To-Do List</h2>
-          <button id="addTaskBtn" class="add-event-btn">+ Add Task</button>
+          <h2>Habit Tracker</h2>
+          <button id="addHabitBtn" class="add-event-btn">+ Add Habit</button>
         </div>
 
-        <div class="task-container">
-          <div class="task-categories" id="taskCategories"></div>
+        <div class="habit-view-controls">
+          <button class="view-btn active" data-view="daily">Daily</button>
+          <button class="view-btn" data-view="weekly">Weekly</button>
+          <button class="view-btn" data-view="monthly">Monthly</button>
+          <button class="view-btn" data-view="graph">Progress Graph</button>
         </div>
 
-        <!-- Task Modal -->
-        <div id="taskModal" class="modal">
+        <div class="chart-container">
+          <canvas id="progressChart"></canvas>
+        </div>
+
+        <div class="habit-container" id="habitContainer">
+          <!-- Habits will be rendered here -->
+        </div>
+
+        <!-- Habit Modal -->
+        <div id="habitModal" class="modal">
           <div class="modal-content">
             <span class="close-btn">&times;</span>
-            <h3 class="modal-title">Add New Task</h3>
-            <form id="taskForm">
-              <input type="hidden" id="taskId" />
+            <h3 class="modal-title">Add New Habit</h3>
+            <form id="habitForm">
+              <input type="hidden" id="habitId" />
               <div class="form-group">
-                <label for="taskTitle">Task Title</label>
-                <input type="text" id="taskTitle" required />
+                <label for="habitName">Habit Name</label>
+                <input type="text" id="habitName" required />
               </div>
               <div class="form-group">
-                <label for="taskCategory">Category</label>
-                <select id="taskCategory" required>
-                  <option value="work">Work</option>
-                  <option value="personal">Personal</option>
-                  <option value="hobbies">Hobbies</option>
+                <label for="habitCategory">Category</label>
+                <select id="habitCategory">
+                  <option value="health">Health</option>
+                  <option value="productivity">Productivity</option>
+                  <option value="learning">Learning</option>
+                  <option value="mindfulness">Mindfulness</option>
                 </select>
               </div>
               <div class="form-group">
-                <label for="taskPriority">Priority</label>
-                <select id="taskPriority" required>
-                  <option value="high">High</option>
-                  <option value="medium">Medium</option>
-                  <option value="low">Low</option>
+                <label for="habitColor">Color</label>
+                <select id="habitColor">
+                  <option value="#4ade80">Green</option>
+                  <option value="#60a5fa">Blue</option>
+                  <option value="#f87171">Red</option>
+                  <option value="#fbbf24">Yellow</option>
+                  <option value="#a78bfa">Purple</option>
                 </select>
               </div>
               <div class="form-group">
-                <label for="taskDueDate">Due Date</label>
-                <input type="date" id="taskDueDate" />
+                <label for="habitReminder">Reminder Time</label>
+                <input type="time" id="habitReminder" />
               </div>
               <div class="form-group">
-                <label for="taskDescription">Description</label>
-                <textarea id="taskDescription" rows="3"></textarea>
+                <label>
+                  <input type="checkbox" id="habitWeekdays" checked />
+                  Weekdays Only
+                </label>
               </div>
-              <button type="submit" class="submit-btn">Save Task</button>
+              <button type="submit" class="submit-btn">Save Habit</button>
             </form>
           </div>
         </div>
       </main>
     </div>
 
-    <script src="scripts/todo.js"></script>
+    <script src="scripts/habits.js"></script>
   </body>
 </html>
