@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Second Brain | Journal</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.quilljs.com/1.3.7/quill.snow.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/journal.css" />
+  </head>
+  <body class="light-theme">
+    <div class="app">
+      <header class="header">
+        <div class="header-left">
+          <h1>Second Brain.</h1>
+          <div class="date-display" id="currentDate"></div>
+        </div>
+        <div class="header-right">
+          <button id="themeToggle" class="theme-toggle" title="Toggle theme">
+            <span class="moon">🌙</span>
+            <span class="sun">☀️</span>
+          </button>
+          <button class="logout-btn">Logout</button>
+        </div>
+      </header>
+
+      <aside class="sidebar">
+        <nav>
+          <ul>
+            <li>
+              <a href="index.html" class="nav-link"
+                ><span class="icon">📆</span
+                ><span class="text">Calendar</span></a
+              >
+            </li>
+            <li>
+              <a href="todo.html" class="nav-link"
+                ><span class="icon">✅</span><span class="text">To-Do</span></a
+              >
+            </li>
+            <li class="active">
+              <a href="journal.html" class="nav-link"
+                ><span class="icon">📔</span
+                ><span class="text">Journal</span></a
+              >
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <div class="journal-container">
+          <div class="editor-card">
+            <div class="editor-header">
+              <h3 id="editorTitle">New Journal Entry</h3>
+              <div class="editor-date">
+                <label for="journalDate">Date:</label>
+                <input type="date" id="journalDate" class="date-picker" />
+              </div>
+            </div>
+
+            <div id="editor-container"></div>
+
+            <div class="editor-toolbar">
+              <div class="editor-actions">
+                <button id="saveEntryBtn" class="submit-btn">Save Entry</button>
+                <button id="deleteEntryBtn" class="cancel-btn">
+                  Delete Entry
+                </button>
+                <button id="newEntryBtn" class="add-btn">+ New Entry</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="entries-section">
+            <div class="entries-header">
+              <h3>Your Entries</h3>
+              <div class="entries-controls">
+                <select id="sortSelect" class="sort-select">
+                  <option value="newest">Newest First</option>
+                  <option value="oldest">Oldest First</option>
+                </select>
+              </div>
+            </div>
+            <div id="entriesList" class="entries-list"></div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+
+    <!-- Initialize Firebase -->
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyDVoMf2JuGYaA0Y9Uu30g5doEjxj0SrYkY",
+        authDomain: "noted-abfa8.firebaseapp.com",
+        projectId: "noted-abfa8",
+        storageBucket: "noted-abfa8.appspot.com",
+        messagingSenderId: "871510309596",
+        appId: "1:871510309596:web:2c03c5ed9413fd5c085219",
+      };
+      firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <!-- Quill Editor -->
+    <script src="https://cdn.quilljs.com/1.3.7/quill.js"></script>
+
+    <!-- Main Application -->
+    <script src="scripts/journal.js"></script>
+  </body>
+</html>

@@ -101,9 +101,9 @@ function renderTasks(tasks) {
         }
       </div>
       <div class="task-actions">
-        <button class="complete-btn" data-id="${task.id}">✓</button>
-        <button class="edit-btn" data-id="${task.id}">✏️</button>
-        <button class="delete-btn" data-id="${task.id}">🗑️</button>
+        
+        <button class="edit-btn" data-id="${task.id}">Edit</button>
+        <button class="delete-btn" data-id="${task.id}">Delete</button>
       </div>
     `;
 
