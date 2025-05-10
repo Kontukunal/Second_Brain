@@ -1,0 +1,165 @@
+/* Habit Tracker Styles */
+.habit-view-controls {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  background: var(--bg-secondary);
+  padding: 0.5rem;
+  border-radius: 8px;
+  width: fit-content;
+}
+
+.habit-view-controls .view-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: none;
+  color: var(--text-secondary);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.habit-view-controls .view-btn.active {
+  background: var(--primary-color);
+  color: white;
+}
+
+.habit-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+.habit-card {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  border-left: 4px solid;
+}
+
+.habit-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.habit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.habit-title {
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.habit-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.habit-actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: var(--transition);
+}
+
+.habit-actions button:hover {
+  opacity: 1;
+}
+
+.habit-streak {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.habit-tracker {
+  margin-top: 1rem;
+}
+
+.tracker-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.tracker-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+}
+
+.tracker-day {
+  aspect-ratio: 1;
+  border-radius: 4px;
+  background: var(--bg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+}
+
+.tracker-day.completed {
+  background: var(--primary-color);
+  color: white;
+}
+
+.tracker-day.today {
+  outline: 2px solid var(--primary-color);
+}
+
+.tracker-day-label {
+  position: absolute;
+  top: 2px;
+  font-size: 0.7rem;
+}
+
+/* Weekly View */
+.weekly-view .tracker-grid {
+  grid-template-columns: repeat(7, 1fr);
+}
+
+/* Monthly View */
+.monthly-view .tracker-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.monthly-view .tracker-day {
+  aspect-ratio: 2;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .habit-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chart-container {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 2rem;
+}
+
+.graph-view .habit-container {
+  display: none;
+}
+
+.graph-view .chart-container {
+  display: block;
+}
