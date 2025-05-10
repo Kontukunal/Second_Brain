@@ -75,6 +75,43 @@ html {
   gap: 1rem;
 }
 
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.theme-toggle {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: var(--transition);
+  padding: 0;
+}
+
+.logout-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: "Inter", sans-serif;
+  font-size: 0.9rem;
+}
+
+.theme-toggle:hover,
+.logout-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
 .header h1 {
   font-size: 40px;
   font-weight: 600;
@@ -1038,4 +1075,77 @@ html {
 
 .logout-btn:hover {
   background: rgba(255, 255, 255, 0.2);
+}
+
+/* /////// */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 4px;
+}
+
+/* Add z-index hierarchy */
+.header {
+  z-index: 100;
+}
+.sidebar {
+  z-index: 90;
+}
+.modal {
+  z-index: 1000;
+}
+
+@media print {
+  .sidebar,
+  .header-right {
+    display: none;
+  }
+
+  .app {
+    grid-template-columns: 1fr;
+  }
+
+  .calendar-day {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+}
+
+@media (max-width: 480px) {
+  .content-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .view-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .modal-content {
+    margin: 20% auto;
+    width: 95%;
+    padding: 1.5rem;
+  }
+
+  .calendar-header h3 {
+    font-size: 1rem;
+  }
+}
+
+.calendar-day {
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.event-card {
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
 }
