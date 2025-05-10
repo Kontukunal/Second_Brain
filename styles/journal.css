@@ -12,6 +12,7 @@
   padding: 1.5rem;
   max-width: 1200px;
   margin: 0 auto;
+  
 }
 
 /* Editor Card */
@@ -19,7 +20,7 @@
   background: var(--bg-secondary);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
   transition: var(--transition);
 }
 
@@ -279,8 +280,9 @@
   background: var(--bg-secondary);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
   transition: var(--transition);
+  
 }
 
 .editor-card:hover {
