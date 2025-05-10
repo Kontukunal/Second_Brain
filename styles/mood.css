@@ -1,0 +1,139 @@
+/* Mood Tracker Styles */
+.mood-container {
+  padding: 1rem;
+  display: grid;
+  gap: 2rem;
+}
+
+.mood-entry-card {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.mood-options {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+  flex-wrap: wrap;
+}
+
+.mood-option {
+  flex: 1;
+  min-width: 120px;
+  padding: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg-primary);
+}
+
+.mood-option:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.mood-option.selected {
+  transform: scale(1.05);
+  box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+.mood-notes {
+  margin-top: 1.5rem;
+}
+
+.mood-notes label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.mood-notes textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  resize: none;
+  font-family: inherit;
+}
+
+.mood-history {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.chart-container {
+  position: relative;
+  height: 300px;
+  margin: 1.5rem 0;
+}
+
+.mood-entries {
+  display: grid;
+  gap: 1rem;
+}
+
+.mood-entry {
+  background: var(--bg-primary);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-left: 4px solid;
+}
+
+.mood-entry-date {
+  font-weight: 500;
+}
+
+.mood-entry-value {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mood-entry-notes {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-top: 0.5rem;
+  grid-column: 1 / -1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .mood-options {
+    flex-direction: column;
+  }
+
+  .mood-option {
+    width: 100%;
+  }
+}
+
+.sidebar h4 {
+  text-align: center;
+  margin: 1.5rem 0 0;
+  padding: 0.5rem;
+  color: var(--text-secondary);
+  font-weight: normal;
+  font-size: 0.9rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.sidebar h4:hover {
+  color: var(--primary-color);
+}
