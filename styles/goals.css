@@ -116,3 +116,17 @@
     grid-template-columns: 1fr;
   }
 }
+
+.sidebar h4 {
+  text-align: center;
+  margin: 1.5rem 0 0;
+  padding: 0.5rem;
+  color: var(--text-secondary);
+  font-weight: normal;
+  font-size: 0.9rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.sidebar h4:hover {
+  color: var(--primary-color);
+}

@@ -2,13 +2,14 @@
 <html lang="en">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Second Brain. | To-Do</title>
+    <title>Second Brain. | Mood Tracker</title>
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
     />
     <link rel="stylesheet" href="styles/main.css" />
-    <link rel="stylesheet" href="styles/todo.css" />
+    <link rel="stylesheet" href="styles/mood.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
@@ -50,7 +51,7 @@
                 <span class="text">Calendar</span>
               </a>
             </li>
-            <li class="active">
+            <li>
               <a href="todo.html" class="nav-link">
                 <span class="icon">✅</span>
                 <span class="text">To-Do</span>
@@ -74,7 +75,7 @@
                 <span class="text">Habits</span>
               </a>
             </li>
-            <li>
+            <li class="active">
               <a href="mood.html" class="nav-link">
                 <span class="icon">😊</span>
                 <span class="text">Mood</span>
@@ -91,56 +92,57 @@
 
       <main class="main-content">
         <div class="content-header">
-          <h2>To-Do List</h2>
-          <button id="addTaskBtn" class="add-event-btn">+ Add Task</button>
+          <h2>Mood Tracker</h2>
+          <div class="view-controls">
+            <button class="view-btn active" data-view="daily">Daily</button>
+            <button class="view-btn" data-view="weekly">Weekly</button>
+            <button class="view-btn" data-view="monthly">Monthly</button>
+          </div>
         </div>
 
-        <div class="task-container">
-          <div class="task-categories" id="taskCategories"></div>
-        </div>
+        <div class="mood-container">
+          <!-- Today's Mood Entry -->
+          <div class="mood-entry-card">
+            <h3>How are you feeling today?</h3>
+            <div class="mood-options">
+              <button class="mood-option" data-mood="5" data-color="#4ade80">
+                😊 Great
+              </button>
+              <button class="mood-option" data-mood="4" data-color="#a3e635">
+                🙂 Good
+              </button>
+              <button class="mood-option" data-mood="3" data-color="#facc15">
+                😐 Neutral
+              </button>
+              <button class="mood-option" data-mood="2" data-color="#fb923c">
+                😕 Okay
+              </button>
+              <button class="mood-option" data-mood="1" data-color="#f87171">
+                😞 Poor
+              </button>
+            </div>
+            <div class="mood-notes">
+              <label for="moodNotes">Notes (optional)</label>
+              <textarea
+                id="moodNotes"
+                placeholder="Add any notes about your mood..."
+              ></textarea>
+            </div>
+            <button id="saveMoodBtn" class="submit-btn">Save Mood</button>
+          </div>
 
-        <!-- Task Modal -->
-        <div id="taskModal" class="modal">
-          <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <h3 class="modal-title">Add New Task</h3>
-            <form id="taskForm">
-              <input type="hidden" id="taskId" />
-              <div class="form-group">
-                <label for="taskTitle">Task Title</label>
-                <input type="text" id="taskTitle" required />
-              </div>
-              <div class="form-group">
-                <label for="taskCategory">Category</label>
-                <select id="taskCategory" required>
-                  <option value="work">Work</option>
-                  <option value="personal">Personal</option>
-                  <option value="hobbies">Hobbies</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="taskPriority">Priority</label>
-                <select id="taskPriority" required>
-                  <option value="high">High</option>
-                  <option value="medium">Medium</option>
-                  <option value="low">Low</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="taskDueDate">Due Date</label>
-                <input type="date" id="taskDueDate" />
-              </div>
-              <div class="form-group">
-                <label for="taskDescription">Description</label>
-                <textarea id="taskDescription" rows="3"></textarea>
-              </div>
-              <button type="submit" class="submit-btn">Save Task</button>
-            </form>
+          <!-- Mood History -->
+          <div class="mood-history">
+            <h3>Your Mood History</h3>
+            <div class="chart-container">
+              <canvas id="moodChart"></canvas>
+            </div>
+            <div class="mood-entries" id="moodEntries"></div>
           </div>
         </div>
       </main>
     </div>
 
-    <script src="scripts/todo.js"></script>
+    <script src="scripts/mood.js"></script>
   </body>
 </html>

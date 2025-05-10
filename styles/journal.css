@@ -12,7 +12,6 @@
   padding: 1.5rem;
   max-width: 1200px;
   margin: 0 auto;
-  
 }
 
 /* Editor Card */
@@ -282,7 +281,6 @@
   padding: 1.5rem;
   box-shadow: var(--shadow-md);
   transition: var(--transition);
-  
 }
 
 .editor-card:hover {
@@ -513,4 +511,18 @@
   .entries-list {
     grid-template-columns: 1fr;
   }
+}
+
+.sidebar h4 {
+  text-align: center;
+  margin: 1.5rem 0 0;
+  padding: 0.5rem;
+  color: var(--text-secondary);
+  font-weight: normal;
+  font-size: 0.9rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.sidebar h4:hover {
+  color: var(--primary-color);
 }

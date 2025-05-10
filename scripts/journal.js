@@ -436,3 +436,4 @@ function setupEventListeners() {
 }
 
 document.addEventListener("DOMContentLoaded", init);
+
