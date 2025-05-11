@@ -1,53 +1,61 @@
-# Second Brain - Productivity Dashboard
+# 🧠 Second Brain – Productivity Dashboard
 
-## Introduction
+**Second Brain** is an all-in-one productivity web application designed to help users streamline their personal, academic, and professional life. It integrates multiple productivity tools into a single, intuitive dashboard — combining calendar management, goal tracking, habit building, mood tracking, and journaling.
 
-Second Brain is an all-in-one productivity application designed to help users organize their personal, academic, and professional lives. It combines calendar management, goal tracking, habit formation, mood tracking, and journaling into a single, intuitive interface. The app helps users visualize their progress and maintain consistency in their daily routines.
+---
 
-## Project Type
+## 📌 Project Type
 
-Fullstack
+**Fullstack Web Application : HTML, CSS, JavaScript, FireBase**
+---
 
-## Directory Structure
+## 🎥 Video Walkthrough
 
-SECOND-BRAIN/
-├─ scripts/
-│ ├─ app.js
-│ ├─ goals.js
-│ ├─ habits.js
-│ ├─ journal.js
-│ ├─ mood.js
-│ └─ todo.js
-├─ styles/
-│ ├─ main.css
-│ ├─ goals.css
-│ ├─ habits.css
-│ ├─ journal.css
-│ ├─ mood.css
-│ └─ todo.css
-├─ todo.html
-├─ goals.html
-├─ habit.html
-├─ mood.html
-├─ journal.html
-└─ README.md
+[![Features Walkthrough](https://img.youtube.com/vi/4U1djuNt1BY/0.jpg)](https://youtu.be/4U1djuNt1BY)
 
-## Video Walkthroughs
+---
 
-[![Features Walkthrough]https://youtu.be/4U1djuNt1BY]
+## 🚀 Features
 
-## Features
+- **📅 Calendar Integration**  
+  Manage events with multiple views (day, week, month) and intuitive color-coding.
 
-- **Calendar Integration**: Manage events with color-coding and different views (day/week/month)
-- **Goal Tracking**: Set and monitor progress toward personal, academic, and career goals
-- **Habit Formation**: Daily habit tracking with streak counters and progress visualization
-- **Mood Tracking**: Log emotional states and view trends over time
-- **Journaling**: Secure space for personal reflections and quick notes
-- **Dark/Light Mode**: Theme customization for comfortable use at any time
+- **🎯 Goal Tracking**  
+  Set personal, academic, and career goals and track your progress visually.
 
-## Design Decisions & Assumptions
+- **💡 Habit Formation**  
+  Build and maintain daily habits using streak counters and progress charts.
 
-1. **Firebase Integration**: Chosen for real-time updates and easy authentication
-2. **Single Page Architecture**: Each major feature has its own HTML file for better separation
-3. **Visual Progress Indicators**: Consistent use of progress bars and charts across features
-4. **Minimalist UI**: Focus on functionality with clean, distraction-free interface
+- **😌 Mood Tracking**  
+  Log your emotions daily and observe trends over time with mood graphs.
+
+- **📓 Journaling**  
+  Write secure personal reflections, notes, and ideas in a distraction-free editor.
+
+- **🌙 Dark/Light Mode**  
+  Switch between themes to suit your environment and reduce eye strain.
+
+---
+
+## 🛠️ Tech Stack & Design Decisions
+
+- **📡 Firebase Integration**  
+  Utilized for real-time updates and user authentication.
+
+- **🧩 Modular Page Structure**  
+  Each major feature is built as a separate HTML page for better separation of concerns.
+
+- **📊 Visual Progress Indicators**  
+  Unified use of charts and progress bars to enhance user insight across modules.
+
+- **🧘 Minimalist UI**  
+  Focused on clean design to keep users engaged without distractions.
+
+---
+
+## ✅ Future Improvements
+
+- Add user analytics and reports  
+- Customizable widgets for the dashboard  
+ 
+
