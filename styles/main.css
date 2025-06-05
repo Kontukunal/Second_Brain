@@ -382,26 +382,44 @@ html {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(5px);
+  overflow: hidden;
 }
 
 .modal-content {
   background-color: var(--bg-primary);
-  margin: 10% auto;
-  padding: 2rem;
+  margin: 2rem auto;
+  padding: 1.5rem;
   border-radius: 12px;
   width: 90%;
-  max-width: 500px;
+  max-width: 450px;
   box-shadow: var(--shadow-xl);
   position: relative;
+  max-height: 85vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.modal-content::-webkit-scrollbar {
+  display: none;
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
 }
 
 .close-btn {
   position: absolute;
-  right: 1.5rem;
-  top: 1.5rem;
-  font-size: 1.5rem;
+  right: 1rem;
+  top: 1rem;
+  font-size: 1.25rem;
   cursor: pointer;
   color: var(--text-secondary);
+  background: none;
+  border: none;
+  z-index: 1;
 }
 
 .close-btn:hover {
@@ -409,7 +427,32 @@ html {
 }
 
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
+  min-width: 0;
+}
+
+@media (max-width: 600px) {
+  .modal-content {
+    padding: 1.2rem;
+    max-width: 95%;
+  }
+
+  .form-group {
+    margin-bottom: 0.8rem;
+  }
+}
+
+@media (max-height: 700px) {
+  .modal-content {
+    max-height: 85vh;
+    padding: 1rem;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    padding: 0.6rem;
+  }
 }
 
 .form-group label {
@@ -429,6 +472,8 @@ html {
   background-color: var(--bg-secondary);
   color: var(--text-primary);
   font-family: inherit;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .form-group textarea {
@@ -1071,19 +1116,16 @@ html {
   position: relative;
 }
 
-
 .auth-form h2::after {
   content: "";
   display: block;
-  width: 100px; 
-  height: 2px; 
-  background: var(--primary-color); 
-  margin: 0.75rem auto 0; 
-  opacity: 0.6; 
-  border-radius: 2px; 
+  width: 100px;
+  height: 2px;
+  background: var(--primary-color);
+  margin: 0.75rem auto 0;
+  opacity: 0.6;
+  border-radius: 2px;
 }
-
-
 
 .logout-btn {
   background: rgba(255, 255, 255, 0.1);

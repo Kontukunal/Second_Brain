@@ -434,7 +434,6 @@ function setupEventListeners() {
       category: document.getElementById("habitCategory").value,
       color: document.getElementById("habitColor").value,
       reminder: document.getElementById("habitReminder").value || null,
-      weekdaysOnly: document.getElementById("habitWeekdays").checked,
       updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
       completions: [],
     };
@@ -489,8 +488,6 @@ async function handleEditHabit(habit) {
   document.getElementById("habitCategory").value = habit.category;
   document.getElementById("habitColor").value = habit.color || "#4ade80";
   document.getElementById("habitReminder").value = habit.reminder || "";
-  document.getElementById("habitWeekdays").checked =
-    habit.weekdaysOnly || false;
   document.getElementById("habitId").value = habit.id;
   document.querySelector(".modal-title").textContent = "Edit Habit";
   habitModal.style.display = "block";

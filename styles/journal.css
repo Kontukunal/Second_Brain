@@ -52,6 +52,20 @@
   margin-bottom: 1rem;
 }
 
+.ql-editor.ql-blank::before {
+  color: var(--text-secondary);
+  font-style: normal;
+  opacity: 0.7;
+}
+
+.dark-theme .ql-editor.ql-blank::before {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.light-theme .ql-editor.ql-blank::before {
+  color: rgba(0, 0, 0, 0.7);
+}
+
 .ql-toolbar {
   border-radius: var(--radius-md) var(--radius-md) 0 0 !important;
   background: var(--bg-primary) !important;
@@ -218,19 +232,8 @@
   background-color: var(--bg-primary);
 }
 
-.add-btn {
-  background-color: var(--success-color);
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  font-weight: 500;
-  transition: var(--transition);
-}
-
 .add-btn:hover {
-  background-color: var(--success-dark);
+  background-color: var(--secondary-color);
 }
 
 /* Responsive Design */
