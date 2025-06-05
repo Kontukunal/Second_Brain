@@ -1062,6 +1062,29 @@ html {
   display: none;
 }
 
+#form-title {
+  text-align: center;
+  margin: 0 0 1.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  position: relative;
+}
+
+
+.auth-form h2::after {
+  content: "";
+  display: block;
+  width: 100px; 
+  height: 2px; 
+  background: var(--primary-color); 
+  margin: 0.75rem auto 0; 
+  opacity: 0.6; 
+  border-radius: 2px; 
+}
+
+
+
 .logout-btn {
   background: rgba(255, 255, 255, 0.1);
   border: none;

@@ -1,7 +1,6 @@
 // Initialize Firebase
 auth = firebase.auth();
 db = firebase.firestore();
-// const { Timestamp } = firebase.firestore;
 
 // DOM Elements
 const addEventBtn = document.getElementById("addEventBtn");
@@ -67,18 +66,28 @@ function setupAuth() {
   const signupForm = document.getElementById("signup-form");
   const toggleSignup = document.getElementById("toggle-signup");
   const authError = document.getElementById("auth-error");
+  const formTitle = document.getElementById("form-title");
 
-  // Toggle between login and signup forms
+  loginForm.style.display = "block";
+  signupForm.style.display = "none";
+  toggleSignup.textContent = "Don't have an account? Sign up";
+  formTitle.textContent = "Login";
+
   toggleSignup.addEventListener("click", (e) => {
     e.preventDefault();
-    loginForm.style.display =
-      loginForm.style.display === "none" ? "block" : "none";
-    signupForm.style.display =
-      signupForm.style.display === "none" ? "block" : "none";
-    toggleSignup.textContent =
-      loginForm.style.display === "none"
-        ? "Already have an account? Login"
-        : "Don't have an account? Sign up";
+    if (loginForm.style.display === "none") {
+      // Switch to login
+      loginForm.style.display = "block";
+      signupForm.style.display = "none";
+      toggleSignup.textContent = "Don't have an account? Sign up";
+      formTitle.textContent = "Login";
+    } else {
+      // Switch to signup
+      loginForm.style.display = "none";
+      signupForm.style.display = "block";
+      toggleSignup.textContent = "Already have an account? Login";
+      formTitle.textContent = "Sign Up";
+    }
     authError.textContent = "";
   });
 
