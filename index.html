@@ -29,6 +29,7 @@
     <div id="auth-container" class="auth-container">
       <div class="auth-form">
         <h2>Welcome to Second Brain.</h2>
+        <h3 id="form-title">Login</h3>
         <div id="auth-error" class="auth-error"></div>
         <form id="login-form">
           <input type="email" id="login-email" placeholder="Email" required />
@@ -40,7 +41,7 @@
           />
           <button type="submit">Login</button>
         </form>
-        <form id="signup-form">
+        <form id="signup-form" style="display: none">
           <input type="email" id="signup-email" placeholder="Email" required />
           <input
             type="password"
@@ -51,7 +52,7 @@
           <button type="submit">Sign Up</button>
         </form>
         <p class="auth-toggle">
-          Don't have an account? <a href="#" id="toggle-signup">Sign up</a>
+          <a href="#" id="toggle-signup">Sign up</a>
         </p>
       </div>
     </div>
