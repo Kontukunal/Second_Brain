@@ -1,4 +1,4 @@
-# 🧠 Second Brain – Productivity Dashboard
+# 🧠 Second Brain – Productivity Dashboard [https://secondbrain-by-kunal.netlify.app]
 
 **Second Brain** is an all-in-one productivity web application designed to help users streamline their personal, academic, and professional life. It integrates multiple productivity tools into a single, intuitive dashboard — combining calendar management, goal tracking, habit building, mood tracking, and journaling.
 
